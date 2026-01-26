@@ -1,0 +1,30 @@
+.backBtn {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 12px;
+    margin-bottom: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    border-radius: 4px;
+}
+
+.backBtn:hover {
+    color: #0056b3;
+    background-color: #f0f0f0;
+}
+
+.backBtn:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+.backBtn:active {
+    color: #004085;
+    background-color: #e0e0e0;
+}
