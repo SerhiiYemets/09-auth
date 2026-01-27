@@ -12,3 +12,11 @@ export interface LoginRequest {
 export interface UpdateUser {
     username: string;
 }
+
+export interface StatusMessage {
+    message: string;
+}
+
+export interface AuthResponse {
+    user: User;
+}
