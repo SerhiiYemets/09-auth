@@ -46,7 +46,7 @@ export const deleteNote = async (id: string): Promise<Note> => {
     const response = await nextServer.delete<Note>(endPoint);
 
     return response.data;
-}
+};
 
 //Реєстрація 
 export const registerUser = async (userData: LoginRequest): Promise<User> => {

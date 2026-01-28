@@ -1,13 +1,19 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { fetchNotes } from '@/lib/api/api';
+import { fetchNotes } from '@/lib/api/clientApi';
 import NotesClient from './Notes.client';
 import type { Metadata } from "next";
+import type { NoteTag } from '@/types/note';
 
 interface NotesPageProps {
     params: Promise<{
         slug?: string[];
     }>;
 }
+
+const validTags: NoteTag[] = [
+    'Work','Personal','Meeting','Shopping','Ideas','Travel',
+    'Finance','Health','Important','Todo'
+];
 
 export async function generateMetadata({ params }: NotesPageProps): Promise<Metadata> {
     const { slug } = await params;
@@ -21,12 +27,12 @@ export async function generateMetadata({ params }: NotesPageProps): Promise<Meta
         description,
         alternates: { canonical: `/notes/filter/${tag}` },
         openGraph: {
-        title,
-        description,
-        url: `https://notehub.com/notes/filter/${tag}`,
-        siteName: 'Note Hub',
-        images: [{ url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg', width: 1200, height: 630, alt: title }],
-        type: 'website',
+            title,
+            description,
+            url: `https://notehub.com/notes/filter/${tag}`,
+            siteName: 'Note Hub',
+            images: [{ url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg', width: 1200, height: 630, alt: title }],
+            type: 'website',
         },
         twitter: { 
             card: 'summary_large_image', 
@@ -39,18 +45,22 @@ export async function generateMetadata({ params }: NotesPageProps): Promise<Meta
 
 export default async function NotesPage({ params }: NotesPageProps) {
     const { slug } = await params;
-    const tag = slug?.[0] ?? 'all';
+    const rawTag = slug?.[0] ?? 'all';
+
+    const tag: NoteTag | undefined = validTags.includes(rawTag as NoteTag)
+        ? (rawTag as NoteTag)
+        : undefined;
 
     const queryClient = new QueryClient();
 
     await queryClient.prefetchQuery({
-        queryKey: ['notes', tag],
-        queryFn: () => fetchNotes(1, 8, undefined, tag === 'all' ? undefined : tag),
+        queryKey: ['notes', tag ?? 'all'],
+        queryFn: () => fetchNotes(1, 8, undefined, tag),
     });
 
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <NotesClient tag={tag} />
+            <NotesClient tag={tag ?? 'all'} />
         </HydrationBoundary>
     );
 }
