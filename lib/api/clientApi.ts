@@ -34,7 +34,7 @@ export const fetchNoteByID = async (id: string): Promise<Note> => {
 export const createNote = async (note: NewNote): Promise<Note> => {
     const endPoint = `/notes`;
 
-    const response = await nextServer.post<Note>(endPoint);
+    const response = await nextServer.post<Note>(endPoint, note);
 
     return response.data;
 }
@@ -49,48 +49,33 @@ export const deleteNote = async (id: string): Promise<Note> => {
 }
 
 //Реєстрація 
-export const registerUser = async (userData: LoginRequest): Promise<Note> => {
-    const endPoint = `/app/api/auth/register`;
-
-    const response = await nextServer.post<User>(endPoint, userData);
-
-    return response.data;
+export const registerUser = async (userData: LoginRequest): Promise<User> => {
+    return (
+        await nextServer.post<User>('/app/api/auth/register', userData)).data;
 }
 
 //Аутентицікація
-export const loginUser = async (userData: LoginRequest): Promise<Note> => {
-    const endPoint = `/app/api/auth/login`;
-
-    const response = await nextServer.post<User>(endPoint, userData);
-
-    return response.data;
+export const loginUser = async (userData: LoginRequest): Promise<User> => {
+    return (
+        await nextServer.post<User>('/app/api/auth/login', userData)).data;
 }
 
 //Вихід користувача
-export const logoutUser = async (id: string): Promise<Note> => {
-    const endPoint = `/app/api/auth/logout`;
-
-    const response = await nextServer.post<User>(endPoint);
-
-    return response.data;
+export const logoutUser = async (): Promise<StatusMessage> => {
+    return (
+        await nextServer.post<StatusMessage>('/app/api/auth/logout')).data;
 }
 
 //Перевірка сессії користувача 
-export const checkSession = async (): Promise<Note> => {
-    const endPoint = `/app/api/auth/session`;
-
-    const response = await nextServer.get<StatusMessage>(endPoint);
-
-    return response.data;
+export const checkSession = async (): Promise<StatusMessage> => {
+    return (
+        await nextServer.get<StatusMessage>('/app/api/auth/session')).data;
 }
 
 //отримати профіль користувача 
-export const getMe = async(): Promise<Note> => {
-    const endPoint = `/app/api/users/me`;
-
-    const response = await nextServer.get<User>(endPoint);
-
-    return response.data;
+export const getMe = async (): Promise<User> => {
+    return (
+        await nextServer.get<User>('/app/api/users/me')).data;
 }
 
 //Оновлення профілю
