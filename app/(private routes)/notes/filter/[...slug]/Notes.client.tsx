@@ -8,6 +8,7 @@ import { fetchNotes } from "@/lib/api/clientApi";
 import NoteList from "@/components/NoteList/NoteList";
 import Pagination from "@/components/Pagination/Pagination";
 import SearchBox from "@/components/SearchBox/SearchBox";
+import type { NoteTag } from "@/types/note";
 
 interface NotesClientProps {
     tag: string;
@@ -27,6 +28,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
                 currentPage,
                 perPage,
                 search || undefined,
+                tag !== 'all' ? tag as NoteTag : undefined  // Added tag parameter
             ),
         placeholderData: keepPreviousData,
     });
