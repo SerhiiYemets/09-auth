@@ -1,18 +1,24 @@
 'use client'
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";;
 import css from "./AuthNavigation.module.css";
 import { useUserAuthStore } from "@/lib/store/authStore";
 import Link from "next/link";
+import { logoutUser } from '@/lib/api/clientApi';
 
 export default function AuthNavigation() {
     const router = useRouter();
     const { isAuthenticated, user, clearIsAuthenticated } = useUserAuthStore();
 
     const handleLogout = async () => {
-        await clearIsAuthenticated();
+    try {
+        await logoutUser(); // Call API to clear server-side session/cookies
+        clearIsAuthenticated(); // Then clear local state
         router.push('/sign-in');
-    };
+    } catch (error) {
+        console.error('Logout failed:', error);
+    }
+};
 
     return (
     <>
