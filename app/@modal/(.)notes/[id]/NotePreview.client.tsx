@@ -1,52 +1,51 @@
-"use client";
-
-import Modal from "@/components/Modal/Modal";
-import { fetchNoteById } from "@/lib/api/api";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import css from "./NotePreview.module.css";
+'use client';
+import { useQuery } from '@tanstack/react-query';
+import css from './NotePreview.module.css';
+import { fetchNoteByID } from '@/lib/api/clientApi';
+import { useRouter } from 'next/navigation';
+import Modal from '@/components/Modal/Modal';
 
 interface NotePreviewClientProps {
     id: string;
 }
 
-const NotePreviewClient = ({ id }: NotePreviewClientProps) => {
+export default function NotePreviewClient({ id }: NotePreviewClientProps) {
     const router = useRouter();
     const onClose = () => router.back();
 
     const {
         data: note,
         isLoading,
-        error,
+        isError,
+        isSuccess,
     } = useQuery({
-        queryKey: ["note", id],
-        queryFn: () => fetchNoteById(id),
+        queryKey: ['note', id],
+        queryFn: () => fetchNoteByID(id),
         refetchOnMount: false,
     });
 
-    if (isLoading) return <p>Loading, please wait...</p>;
-    
-    if (!note) {
-        const errorMessage =
-            error instanceof Error ? error.message : "Unknown error";
-        return <p>Could not fetch note. {errorMessage}</p>;
+    if (isLoading) {
+        return <p>Loading, please wait...</p>;
     }
 
     return (
-        <Modal onClose={onClose}>
-            <button
-                className={css.backBtn}
-                onClick={onClose}
-                aria-label="Close modal"
-            >
-                ← Back
-            </button>
-            <h2>{note.title}</h2>
-            <b>{note.tag}</b>
-            <p>{note.content}</p>
-            <p>{note.createdAt}</p>
-        </Modal>
+        <div className={css.container}>
+        {(isError || !note) && <p>Something went wrong.</p>}
+        {isSuccess && (
+            <Modal onClose={onClose}>
+            <div className={css.item}>
+                <div className={css.header}>
+                <h2>{note.title}</h2>
+                </div>
+                <p className={css.tag}>{note.tag}</p>
+                <p className={css.content}>{note.content}</p>
+                <p className={css.date}>{note.createdAt}</p>
+                <button onClick={onClose} className={css.backBtn}>
+                Back
+                </button>
+            </div>
+            </Modal>
+        )}
+        </div>
     );
-};
-
-export default NotePreviewClient;
+}

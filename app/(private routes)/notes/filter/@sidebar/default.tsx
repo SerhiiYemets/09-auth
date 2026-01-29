@@ -9,11 +9,15 @@ const SideBarNotes = () => {
         'Personal',
         'Meeting',
         'Shopping',
+        'Ideas',
+        'Travel',
+        'Finance',
+        'Health',
+        'Important',
     ];
 
 return (
     <>
-        {/* <Link href="/notes/action/create">Create note</Link> */}
         <ul className={css.menuList}>
             <li className={css.menuItem}>
                 <Link href="/notes/filter/all" className={css.menuLink}>

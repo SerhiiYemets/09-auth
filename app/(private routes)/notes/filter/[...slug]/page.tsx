@@ -2,7 +2,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import { fetchNotesServer } from '@/lib/api/serverApi';
 import NotesClient from './Notes.client';
 import type { Metadata } from "next";
-import type { NoteTag } from '@/types/note';
+import type { NoteTag, NotesResponse } from '@/types/note';
 
 interface NotesPageProps {
     params: Promise<{
@@ -60,7 +60,10 @@ export default async function NotesPage({ params }: NotesPageProps) {
 
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-            <NotesClient tag={tag ?? 'all'} />
+            <NotesClient 
+                initialData={queryClient.getQueryData<NotesResponse>(['notes', tag ?? 'all'])!} 
+                tag={tag} 
+            />
         </HydrationBoundary>
     );
 }
