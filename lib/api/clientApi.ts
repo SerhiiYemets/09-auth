@@ -67,9 +67,9 @@ export const logoutUser = async (): Promise<StatusMessage> => {
 }
 
 //Перевірка сессії користувача 
-export const checkSession = async (): Promise<StatusMessage> => {
+export const checkSession = async (): Promise<User | StatusMessage> => {
     return (
-        await nextServer.get<StatusMessage>('/auth/session')).data;
+        await nextServer.get<User | StatusMessage>('/auth/session')).data;
 }
 
 //отримати профіль користувача 

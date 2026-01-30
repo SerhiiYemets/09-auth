@@ -29,13 +29,11 @@ function NotesPageClient({ initialData, tag }: NotesClientProps) {
 
     const totalPages = data?.totalPages ?? 0;
 
-  // debounce setter
     const debouncedSetQuery = useDebouncedCallback((value: string) => {
         setQuery(value);
         setCurrentPage(1);
     }, 500);
 
-  // normal onChange handler
     const handleChangeQuery = (value: string) => {
         debouncedSetQuery(value);
 };
