@@ -1,9 +1,10 @@
-import "./globals.css";
-import Header from "@/components/Header/Header";
-import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
-import dynamic from 'next/dynamic';
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
+import './globals.css';
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import AuthProvider from '@/components/AuthProvider/AuthProvider';
 
 const roboto = Roboto({
   subsets: ['latin'], 
@@ -12,7 +13,6 @@ const roboto = Roboto({
   display: 'swap', 
 });
 
-const Footer = dynamic(() => import('@/components/Footer/Footer'));
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://notehub.com"),
@@ -41,19 +41,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children, modal }: { children: React.ReactNode; modal: React.ReactNode; }) {
+export default function RootLayout({
+  children,
+  modal,
+}: Readonly<{
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}>) {
   return (
     <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </head>
       <body className={roboto.variable}>
         <TanStackProvider>
-          <Header />
-          <main>{children}{modal}</main>
-          <Footer />
+          <AuthProvider>
+            <Header />
+            <main>
+              {children}
+              {modal}
+            </main>
+            <Footer />
+          </AuthProvider>
         </TanStackProvider>
-        <div id="modal-root" />
       </body>
     </html>
   );

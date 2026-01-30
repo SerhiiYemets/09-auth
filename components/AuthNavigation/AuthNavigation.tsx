@@ -12,8 +12,8 @@ export default function AuthNavigation() {
 
     const handleLogout = async () => {
     try {
-        await logoutUser(); // Call API to clear server-side session/cookies
-        clearIsAuthenticated(); // Then clear local state
+        await logoutUser(); 
+        clearIsAuthenticated(); 
         router.push('/sign-in');
     } catch (error) {
         console.error('Logout failed:', error);

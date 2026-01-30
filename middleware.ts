@@ -85,4 +85,7 @@ export async function middleware(request: NextRequest) {
     }
 }
 
-export const config = { matcher: ['/profile/:path*', '/sign-in', '/sign-up', '/notes/:path*'] }
+export const config = { 
+    matcher: 
+    ['/profile/:path*', '/sign-in', '/sign-up', '/notes/:path*'] 
+}

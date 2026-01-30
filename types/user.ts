@@ -10,8 +10,8 @@ export interface LoginRequest {
 }
 
 export interface UpdateUser {
-    username?: string;
     email?: string;
+    username?: string;
     avatar?: string;
 }
 
