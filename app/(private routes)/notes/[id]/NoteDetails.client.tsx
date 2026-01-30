@@ -1,53 +1,40 @@
-"use client";
+'use client';
+import { useParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import css from './NoteDetails.module.css';
+import { fetchNoteByID } from '@/lib/api/clientApi';
 
-import { fetchNoteByID } from "@/lib/api/clientApi"; 
-import { useQuery } from "@tanstack/react-query";
-import css from "@/app/notes/[id]/NoteDetails.module.css";
-import type { Note } from "@/types/note";
+export default function NoteDetailsClient() {
+    const { id } = useParams<{ id: string }>();
 
-export default function NoteDetailsClient({ id }: { id: string }) {
-    const { data: note, isLoading, error } = useQuery<Note, Error>({
-        queryKey: ["note", id],
+    const {
+        data: note,
+        isLoading,
+        isError,
+        isSuccess,
+    } = useQuery({
+        queryKey: ['note', id],
         queryFn: () => fetchNoteByID(id),
-        enabled: !!id,
         refetchOnMount: false,
     });
 
-    if (isLoading) return <p>Loading, please wait...</p>;
-    if (error) return <p>Something went wrong.</p>;
-    if (!note) return <p>Note not found.</p>;
+    if (isLoading) {
+        return <p>Loading, please wait...</p>;
+    }
 
     return (
-        <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                __html: JSON.stringify({
-                    "@context": "https://schema.org",
-                    "@type": "Article",
-                    headline: note.title,
-                    description: note.content.substring(0, 160),
-                    url: `https://notehub.com/notes/${id}`,
-                }),
-            }}
-        />
-
         <div className={css.container}>
+        {(isError || !note) && <p>Something went wrong.</p>}
+        {isSuccess && (
             <div className={css.item}>
             <div className={css.header}>
                 <h2>{note.title}</h2>
             </div>
             <p className={css.content}>{note.content}</p>
-            <p className={css.date}>
-                {note.createdAt
-                ? `Created at: ${note.createdAt}`
-                : note.updatedAt
-                ? `Updated at: ${note.updatedAt}`
-                : "No date available"}
-            </p>
+            <p className={css.date}>{note.createdAt}</p>
             </div>
+        )}
         </div>
-        </>
     );
 }
 
