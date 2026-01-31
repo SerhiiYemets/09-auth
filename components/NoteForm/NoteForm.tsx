@@ -93,11 +93,16 @@ export default function NoteForm() {
             defaultValue={draft?.tag}
             onChange={handleChange}
             >
-            <option value="Todo">Todo</option>
-            <option value="Work">Work</option>
-            <option value="Personal">Personal</option>
-            <option value="Meeting">Meeting</option>
-            <option value="Shopping">Shopping</option>
+                <option value="Todo">Todo</option>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Meeting">Meeting</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Ideas">Ideas</option>
+                <option value="Travel">Travel</option>
+                <option value="Finance">Finance</option>
+                <option value="Health">Health</option>
+                <option value="Important">Important</option>
             </select>
             <span className={css.error} />
         </div>
