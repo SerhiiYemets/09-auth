@@ -8,10 +8,13 @@
 }
 
 .header a {
-    text-decoration: none;
-    color: white;
+    margin: 15px;
+    flex-direction: column;
+    display: flex;
+    color: #fff;
     font-size: 1.5rem;
     font-weight: bold;
+    text-decoration: none;
 }
 
 .header a:hover {
@@ -19,6 +22,7 @@
 }
 
 .navigation {
+    
     list-style-type: none;
     margin: 0;
     padding: 0;
